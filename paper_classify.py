@@ -67,7 +67,8 @@ while var == 1:
         print('输入删除的论文名称')
         del_name=input()
         delete=db.remove(del_name)
-        print(f'{delete}已经删除')
+        print(f'{delete}')
+        db.save()
     if select == 5:
         break
 
