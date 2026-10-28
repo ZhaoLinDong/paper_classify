@@ -1,3 +1,6 @@
+from pickledb import PickleDB
+
+db=PickleDB('paper.db')
 
 store=[]
 
@@ -18,21 +21,21 @@ class Paper:
     def paper_input(paper_name,push_time,paper_source,paper_type):
         svg=[paper_name,push_time,paper_source,paper_type]
         store.append(svg)
+        db.set(f'{paper_name}',svg)
+        db.save()
         print(f'成功存储{paper_name},{push_time},{paper_source},{paper_type}')
 
-    def paper_visit(paper_load=[]):
-        length= len(paper_load)
-        for i in range(length):
-            print(f'{i},{paper_load[i]}')
+    # def paper_visit(paper_name):
+    #     db.get('paper_name')
+    #         # print(f'{i},{paper_load[i]}')
 
-    def paper_search(name):
-        length = len(store)
-        for i in range(length):
-            if name == store[i][0]:
-                print(store[i])
 
-    def paper_delete(paper_i):
-        store.pop(paper_i)
+    # def paper_search(name):
+    #
+    #
+
+    # def paper_delete(paper_i):
+    #
 
 
 var = 1
@@ -53,14 +56,18 @@ while var == 1:
 
         Paper.paper_input(paper_name, push_time, paper_source, paper_type)
     if select == 2:
-        Paper.paper_visit(store)
+        keys=db.all()
+        print(keys)
+
     if select == 3:
         print('输入检索的论文名称')
         search_name=input()
-        Paper.paper_search(search_name)
+        print(db.get(search_name))
     if select == 4:
-        paper_i=int(input())
-        Paper.paper_delete(paper_i)
+        print('输入删除的论文名称')
+        del_name=input()
+        delete=db.remove(del_name)
+        print(f'{delete}已经删除')
     if select == 5:
         break
 
