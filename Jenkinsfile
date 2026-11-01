@@ -24,5 +24,29 @@ pipeline {
                 '''
             }
         }
+
+        stage('Test') {
+            steps {
+                bat '''
+                    .venv\\Scripts\\python.exe -m pytest -q
+                '''
+            }
+        }
+
+        stage('Package') {
+            steps {
+                bat '''
+                    if not exist dist mkdir dist
+                    copy /Y paper_classify.py dist\\
+                    copy /Y requirements.txt dist\\
+                '''
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'dist/**', fingerprint: true
+            }
+        }
     }
 }
